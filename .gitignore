@@ -57,3 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
+# Idea (WebStorm)
+.idea
+
+# Temporary 'dist' build directory
+/dist
