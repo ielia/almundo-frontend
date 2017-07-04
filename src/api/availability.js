@@ -3,28 +3,64 @@
 import express from 'express';
 import HotelModel from '../models/hotels';
 
-function parseQueryObject(query) {
-    return Object.keys(query).reduce((acc, key) => {
-        const value = query[key];
-        if (typeof(value) === 'string' && value.startsWith('{')) {
-            try {
-                acc[key] = JSON.parse(value);
-            } catch (error) {
-                acc[key] = value;
-            }
-        } else {
-            acc[key] = value;
-        }
-        return acc;
-    }, {});
+function listFilter(spec, operator) {
+    if (spec) {
+        return { [operator]: spec.split(',') };
+    } else {
+        return undefined;
+    }
 }
 
-export default ({ config, db }) => {
+function inFilter(spec) {
+    return listFilter(spec, '$in');
+}
+
+/**
+ * This function should be a service call to obtain the right place in English.
+ *
+ * @param spec Filter spec.
+ * @returns {{}} MongoDB filter object.
+ */
+function locationFilter(spec) {
+    let filter = {};
+    if (spec) {
+        filter = { $or: [ { 'location.city': spec }, { 'location.country': spec } ] };
+    }
+    return filter;
+}
+
+function rangeFilter(spec) {
+    if (spec) {
+        const bounds = spec.split('-');
+        if (bounds.length !== 2) {
+            throw new Error("Invalid range spec.");
+        }
+        return { $gte: Number(bounds[0]), $lte: Number(bounds[1]) };
+    } else {
+        return undefined;
+    }
+}
+
+function parseFilter(params, query) {
+    const filter = locationFilter(params.location),
+        // currency = query.currency,
+        price = rangeFilter(query.price),
+        stars = inFilter(query.stars);
+    /*
+     * For the purposes of this demo, I'm going to omit filters having to do with
+     * :inYear, :inMonth, :inDay, :outYear, :outMonth, :outDay and :guests.
+     */
+    if (price) filter['price.amount'] = /* convert(currency, price) */ price;
+    if (stars) filter.stars = stars;
+    return filter;
+}
+
+export default () => {
     const router = express.Router();
 
     router.get('/:location/:inYear/:inMonth/:inDay/:outYear/:outMonth/:outDay/:guests', (req, res) => {
-        const filter = parseQueryObject(req.query);
-        console.log(filter);
+        const filter = parseFilter(req.params, req.query);
+        console.log(JSON.stringify(filter));
         HotelModel.find(filter, (err, hotels) => {
             res.status(err ? 500 : 200).json({
                 result: err ? 'ERROR' : 'OK',

@@ -19,7 +19,7 @@ function parseQueryObject(query) {
     }, {});
 }
 
-export default ({ config, db }) => {
+export default () => {
     const router = express.Router();
 
     router.get('/', (req, res) => {

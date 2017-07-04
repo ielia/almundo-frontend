@@ -3,10 +3,10 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
+import path from 'path';
 import initializeDb from './db';
 import middleware from './middleware';
 import api from './api';
-import home from './controllers/home';
 import config from 'config';
 
 let app = express();
@@ -26,14 +26,12 @@ app.use(bodyParser.json({
 
 // connect to db
 initializeDb( db => {
-
 	// internal middleware
 	app.use(middleware({ config, db }));
 
-	// api router
 	app.use('/api', api({ config, db }));
 
-	app.use('/', home({ config, db }));
+    app.use('/static', express.static(path.join(__dirname, 'public')));
 
 	app.server.listen(process.env.PORT || config.port, () => {
 		console.log(`Started on port ${app.server.address().port}`);

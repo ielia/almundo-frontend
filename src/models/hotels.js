@@ -16,11 +16,14 @@ const Schema = mongoose.Schema,
         image: { type: String, required: true },
         amenities: [{
             type: String, enum: ['bar', 'beach', 'cafe', 'desk24x7', 'gym', 'room-svc', 'tv', 'wifi']
-        }], // This might need to go somewhere else
+        }], // May need to go somewhere else
+        rooms: [{ beds: { doubles: Number, singles: Number } }], // Will require an availability service.
         price: {
-            currency: { type: String, enum: ['ARS', 'USD'], required: true },
+            currency: { type: String, enum: ['ARS'], required: true }, // Will require currency-exchange service.
             amount: { type: Number, min: 0, required: true }
-        } // This should go in another model or even in a different service
+        }, // Should go in a different service (such as the 'availability' service).
+        discount: { type: Number, min: 0, max: 1 }, // Needs a promotion service.
+        paymentTypes: [{ type: String, enum: ['inst', 'dest'] }] // 'installments', 'at destination'.
     }),
     HotelModel = mongoose.model('hotel', HotelSchema);
 
