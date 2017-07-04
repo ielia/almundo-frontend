@@ -2,5 +2,5 @@
     "port": 8080,
     "bodyLimit": "100kb",
     "corsHeaders": [ "Link" ],
-    "mongoDB": "mongodb://127.0.0.1:27017/almundo-frontend"
+    "mongoDB": "mongodb://127.0.0.1:27017/almundo-hotels"
 }
