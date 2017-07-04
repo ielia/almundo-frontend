@@ -1,0 +1,7 @@
+{
+    "port": {
+        "__format": "json",
+        "__name": "PORT"
+    },
+    "mongoDB": "MONGO_DB_URI"
+}

@@ -1,61 +1,22 @@
-Express & ES6 REST API Boilerplate
-==================================
+# almundo-hotels-api
 
-[![bitHound Score](https://www.bithound.io/github/developit/express-es6-rest-api/badges/score.svg)](https://www.bithound.io/github/developit/express-es6-rest-api)
+## Iniciar
 
-This is a straightforward boilerplate for building REST APIs with ES6 and Express.
-
-- ES6 support via [babel](https://babeljs.io)
-- REST resources as middleware via [resource-router-middleware](https://github.com/developit/resource-router-middleware)
-- CORS support via [cors](https://github.com/troygoode/node-cors)
-- Body Parsing via [body-parser](https://github.com/expressjs/body-parser)
-
-> Tip: If you are using [Mongoose](https://github.com/Automattic/mongoose), you can automatically expose your Models as REST resources using [restful-mongoose](https://git.io/restful-mongoose).
-
-Getting Started
----------------
-
-```sh
-# clone it
-git clone git@github.com:developit/express-es6-rest-api.git
-cd express-es6-rest-api
-
-# Make it your own
-rm -rf .git && git init && npm init
-
-# Install dependencies
+### Precondiciones
+Instalar un servidor MongoDB en local y crear una base llamada 'almundo-hotels'. Luego, compilar e iniciar el servicio:
+```
 npm install
-
-# Start development live-reload server
-PORT=8080 npm run dev
-
-# Start production server:
 PORT=8080 npm start
 ```
-Docker Support
-------
-```sh
-cd express-es6-rest-api
 
-# Build your docker
-docker build -t es6/api-service .
-#            ^      ^           ^
-#          tag  tag name      Dockerfile location
+## Modelo
+La definición del modelo se encuentra en el siguiente archivo: `src/models/hotels.js`.
 
-# run your docker
-docker run -p 8080:8080 es6/api-service
-#                 ^            ^
-#          bind the port    container tag
-#          to your host
-#          machine port   
-
+## URLs importantes
+```
+GET  /api/availability/:location/:inYear/:inMonth/:inDay/:outYear/:outMonth/:outDay/:guests?price=MIN-MAX&stars=1,2,3,4,5
+GET  /api/hotels (devuelve todos los hoteles en la base)
+GET  /api/hotels/:_id (_id = MongoDB document id, returns a single hotel)
+POST /api/hotels (Content-Type: application/json, el contenido deberá corresponder al modelo citado anteriormente)
 ```
 
-Docker Demo
--------------------------
-It's supposed to be pretty easy to take your Docker to your favourite cloud service, here's a demo of what's our Dockerized bolierplate is like: [https://docker-deployment-yudfxfiaja.now.sh/api](https://docker-deployment-yudfxfiaja.now.sh/api)
-
-License
--------
-
-MIT
