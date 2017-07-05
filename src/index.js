@@ -31,8 +31,6 @@ initializeDb( db => {
 
 	app.use('/api', api({ config, db }));
 
-    app.use('/static', express.static(path.join(__dirname, 'public')));
-
 	app.server.listen(config.port, () => {
 		console.log(`Started on port ${app.server.address().port}`);
 	});

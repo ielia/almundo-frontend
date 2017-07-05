@@ -30,7 +30,7 @@ yarn-error.log*
 /.lock-wscript
 
 # Compiled binary
-/build
+/dist
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 # build/Release
 
