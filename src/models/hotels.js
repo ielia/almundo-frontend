@@ -23,7 +23,8 @@ const Schema = mongoose.Schema,
             amount: { type: Number, min: 0, required: true }
         }, // Should go in a different service (such as the 'availability' service).
         discount: { type: Number, min: 0, max: 1 }, // Needs a promotion service.
-        paymentTypes: [{ type: String, enum: ['inst', 'dest'] }] // 'installments', 'at destination'.
+        paymentTypes: [{ type: String, enum: ['inst', 'dest'] }], // 'installments', 'at destination'.
+        advertised: Boolean
     }),
     HotelModel = mongoose.model('hotel', HotelSchema);
 

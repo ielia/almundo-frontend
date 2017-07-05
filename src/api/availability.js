@@ -43,6 +43,7 @@ function rangeFilter(spec) {
 
 function parseFilter(params, query) {
     const filter = locationFilter(params.location),
+        name = query.name,
         // currency = query.currency,
         price = rangeFilter(query.price),
         stars = inFilter(query.stars);
@@ -50,6 +51,7 @@ function parseFilter(params, query) {
      * For the purposes of this demo, I'm going to omit filters having to do with
      * :inYear, :inMonth, :inDay, :outYear, :outMonth, :outDay and :guests.
      */
+    if (name) filter.name = { $regex: name };
     if (price) filter['price.amount'] = /* convert(currency, price) */ price;
     if (stars) filter.stars = stars;
     return filter;
